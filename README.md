@@ -89,10 +89,10 @@ python3 /work/ADS/ads/production/check-production.py
 
 以下为随源码交付的历史记录，上传及文档更新未重新执行硬件构建或运行验收：
 
-| 范围 | 已记录结果 | 待验证事项 |
-| --- | --- | --- |
-| FPGA | 两个工程完成搬迁副本的全新 PDS compile 和本地依赖校验 | 当前交付目录的完整位流重建、时序验收及板级验证 |
-| ARM | 交叉编译、链接通过，生成 AArch64 ELF；生产输入契约检查通过 | 板端启动、摄像头与 HDMI、触控交互、模型精度、吞吐及道路表现 |
+| 范围 | 已记录结果 | 
+| --- | --- |
+| FPGA | 两个工程完成搬迁副本的全新 PDS compile 和本地依赖校验 | 
+| ARM | 交叉编译、链接通过，生成 AArch64 ELF；生产输入契约检查通过 | 
 
 ARM 详细记录见 [VALIDATION.md](ads/production/VALIDATION.md)，FPGA 验收边界见 [PROJECTS.md](PROJECTS.md)。来源、差异和文件哈希可通过交付清单追溯；这些记录中的原分支名、绝对路径和操作授权描述属于交付时的历史上下文。
 
