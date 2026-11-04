@@ -1,0 +1,10 @@
+/build/
+/validation_work/
+/validation_relocated/
+__pycache__/
+*.pyc
+*.sbit
+*.bit
+*.rtr
+*.adf
+*.vm

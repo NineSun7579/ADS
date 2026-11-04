@@ -1,0 +1,7 @@
+/build*/
+/validation*/
+__pycache__/
+*.pyc
+*.sbit
+*.sfc
+*.smsk

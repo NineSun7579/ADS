@@ -1,0 +1,93 @@
+`pragma protect begin_protected
+`pragma protect version=1
+`pragma protect author="default"
+`pragma protect author_info="default"
+`pragma protect encrypt_agent="Synplify encryptP1735.pl"
+`pragma protect encrypt_agent_info="Synplify encryptP1735.pl Version 1.1"
+
+`pragma protect key_keyowner="Synplicity"
+`pragma protect key_keyname="SYNP15_1"
+`pragma protect key_method="rsa"
+`pragma protect encoding=(enctype="base64", line_length=76, bytes=256)
+`pragma protect key_block
+sBMarGLeGDJbazLWvPQ9DFEBlaSSWTqKAFkH92JVDQrB0lJRVC9F1vttxO+ofmqgSWrTUUAuFRyF
+XVfgnK8btVhTn0ofTnIICMdZz1fd+nLiZzOB4cjUWg6Pwo3xVDzw2nx84ru7kFGTEMTUVDQMzrnm
+noym68AvHE4ZDRrSfyzJKMVXHYAxqaZjHCxlAV+ZL5s5bcot39/E2/46QYpxdeE0F7GHRYmq4UTI
+GAyaJzPvRQIEx/rOnM2qJ6eY3dG6vZpqj8vBFrnpSkBhTTMwg6rvYswGhI8xv6WzNRuM78L/htJ4
+H7nBoS+CD0G/uNlJLW39ATXJfqASbywUXcRq2w==
+
+`pragma protect key_keyowner="Pango Microsystems"
+`pragma protect key_keyname="PANGO_21"
+`pragma protect key_method="rsa"
+`pragma protect encoding=(enctype="base64", line_length=76, bytes=256)
+`pragma protect key_block
+NAfoOOh+1Tbbfu7wrysDlSft8P9WuDjVh9bvZ5I2TR4roEBdmVaSWopsXxP4k07Nm4fiQgoziI1p
+ZgGGdTWv2KqZmMPidsoM5yiYE9haujy5bECxLFewSd2CmxaCWAkpPtXijzc71D2qPkkZ2Ltz6Ezx
+jdlQWJjmb9Ca9Hpq4Pt/V361fcHAmVFed4T0URh5tBXqZrtQ5BiJKJ0TAw/LrpiT1D17rLMYefqU
+SFGRVxd8rMU/Jv07F+Fahjw9r6BXFiYJT0JyiZrXT0lFZOA8llcZhfoR5N96n02JXBTX44/YVJTk
+y3gaM2W38TaNsrihYsMCxwpz90hpNZXnboDuDQ==
+
+`pragma protect key_keyowner="Cadence Design Systems."
+`pragma protect key_keyname="CDS_RSA_KEY_VER_2"
+`pragma protect key_method="rsa"
+`pragma protect encoding=(enctype="base64", line_length=76, bytes=256)
+`pragma protect key_block
+AhL81uGZcuj+ZN6yer47QId7uKDLpZnA6zrxlU/m1q4UEqhQRKnBerX67YkSJDStoUke0M4XcQAm
+EPgjyYOmz387WSakkEBEsu7cov6Mq1xnC/gCM4bdhdozuAGgD6nl/yxoe0F3zE1lueqKvp1xyNsf
+Zp4XXv3lZFwY2jKb5lRMB6QNgNc5+qGFzalfSw60wJRhh33QXUEfkDfD8j9Uzo47+/v1v3tDVTvC
+W78UEhPxgZyZs1sLNJIaudui3hLYPuw06h+UtU23VX2K8BojKkIIGMVwTy7q/d6G56UylD/YoRMT
+a6ci465KP2DYHOwjYMcnNlauX6jZYxDpMgXnzQ==
+
+`pragma protect key_keyowner="Synopsys"
+`pragma protect key_keyname="SNPS-VCS-RSA-2"
+`pragma protect key_method="rsa"
+`pragma protect encoding=(enctype="base64", line_length=76, bytes=128)
+`pragma protect key_block
+FywzlISK1EaLpyrc0X3bm32Cg9cQusVG5VR2xJSdOoHtd5G6baIEeQ0Cw7xBNT5J8vq2p1DNak6d
+s7RLRrKpPqHXEkztMWOhDmeqAmplnYbM41OWghXV+F3AKAo+u5Y/x/B2CdvVhrcjWGuaB7DoiwQB
+q3melekBz90sI3MPu+g=
+
+`pragma protect key_keyowner="Mentor Graphics Corporation"
+`pragma protect key_keyname="MGC-VERIF-SIM-RSA-2"
+`pragma protect key_method="rsa"
+`pragma protect encoding=(enctype="base64", line_length=76, bytes=256)
+`pragma protect key_block
+idVBmh6NyrDzyPSz0zqowDS/l7P/1eL8YH9wfT/mKKoAoNg+hK28D0um7Ax0BPBnI9goEBKkVrVr
+O2W/2CE4KlFRZw4wxpcIdZlQ6D0tu+VI290M+k8TKSVQ3DbRQo7fuagvmZ2uCkvnOH6IB0u9eqbv
+WYdklMKaOg/8kbt/hQeM8HhsLX5kjHuuqXbzjolT18XaRUnDOLTLqNV7w1zH2KWoO7EvcHHkjTt1
+viUlZXKXAR6pmr7GhgHqRQjP9+vsIJYSNgVZtcY45EApcRw37I4bOYXrfjcINL/aJ6e8bnvmeOzW
+lmiYvQ6YZ+N96Z3/rG94egntp0Lj5VRNsjvf4A==
+
+`pragma protect data_method="aes128-cbc"
+`pragma protect encoding=(enctype="base64", line_length=76, bytes=1568)
+`pragma protect data_block
+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
+
+`pragma protect end_protected

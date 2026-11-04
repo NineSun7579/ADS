@@ -1,0 +1,17 @@
+{
+  "version": "50K v10 seed1",
+  "device": "PGL50H",
+  "device_id": "0x00521899",
+  "bytes": 2101696,
+  "sha256": "a4905f5d94a5b29d9da70365b8d72602b046dbd16f44b42bdfdcc8de1da37f70",
+  "flash_readback_match": true,
+  "programmed_at": "2026-10-31T12:05:05",
+  "reverification": {
+    "checked_at": "2026-11-01T09:01:00",
+    "method": "jtag readback current_readback.sfc",
+    "readback_sha256": "a4905f5d94a5b29d9da70365b8d72602b046dbd16f44b42bdfdcc8de1da37f70",
+    "match": true,
+    "fpga_done_bit_after_scan": 1,
+    "note": "cfg_reset_fpga then scan still reports done=1, i.e. FPGA reloads this image from SPI flash"
+  }
+}

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ip_inst>
+    <header>
+        <vendor>Pango</vendor>
+        <id>07100303</id>
+        <display_name>Divider Generator</display_name>
+        <name>Divider</name>
+        <version>1.0</version>
+        <instance>example_lutmult</instance>
+        <family>Titan2</family>
+        <device>PG2T390H</device>
+        <package>FFBG900</package>
+        <speedgrade>-7</speedgrade>
+        <generator version="2022.2" build="117120">IP Compiler</generator>
+    </header>
+    <param_list>
+        <param>
+            <name>ARESETN</name>
+            <value>true</value>
+        </param>
+        <param>
+            <name>TLAST</name>
+            <value>true</value>
+        </param>
+        <param>
+            <name>Remainder_Type</name>
+            <item>Remainder</item>
+            <value>Remainder</value>
+        </param>
+        <param>
+            <name>DIVIDEND_TLAST</name>
+            <value>true</value>
+        </param>
+        <param>
+            <name>ZERO_DETECT</name>
+            <value>true</value>
+        </param>
+        <param>
+            <name>DIVISOR_TLAST</name>
+            <value>true</value>
+        </param>
+        <param>
+            <name>SIGNED</name>
+            <value>0</value>
+        </param>
+        <param>
+            <name>DIVIDEND_WIDTH</name>
+            <value>11</value>
+        </param>
+        <param>
+            <name>DIVISOR_TUSER</name>
+            <value>true</value>
+        </param>
+        <param>
+            <name>Lantency_Configuration</name>
+            <item>Automatic</item>
+            <value>Automatic</value>
+        </param>
+        <param>
+            <name>OUTPUT_TREADY</name>
+            <value>false</value>
+        </param>
+        <param>
+            <name>OUTPUT_TLAST</name>
+            <item>Pass Dividend TLAST</item>
+            <item>Pass Divisor TLAST</item>
+            <item>OR all TLASTs</item>
+            <item>AND all TLASTs</item>
+            <value>AND all TLASTs</value>
+        </param>
+        <param>
+            <name>DIVISOR_TUSER_Width</name>
+            <value>10</value>
+        </param>
+        <param>
+            <name>DIVISOR_WIDTH</name>
+            <value>11</value>
+        </param>
+        <param>
+            <name>Algorithm_Type</name>
+            <value>2</value>
+        </param>
+        <param>
+            <name>DIVIDEND_TUSER_Width</name>
+            <value>10</value>
+        </param>
+        <param>
+            <name>DIVIDEND_TUSER</name>
+            <value>true</value>
+        </param>
+        <param>
+            <name>Optimize_Goal</name>
+            <item>Performance</item>
+            <value>Performance</value>
+        </param>
+        <param>
+            <name>CLK_PER_DIVISION</name>
+            <value>8</value>
+        </param>
+        <param>
+            <name>ACLKEN</name>
+            <value>true</value>
+        </param>
+        <param>
+            <name>BLOCKING</name>
+            <item>Non Blocking</item>
+            <value>Non Blocking</value>
+        </param>
+        <param>
+            <name>TUSER</name>
+            <value>true</value>
+        </param>
+        <param>
+            <name>RoF_Width</name>
+            <value>11</value>
+        </param>
+    </param_list>
+    <pin_list>
+        <pin>
+            <name>aclk</name>
+            <text>aclk</text>
+            <dir>input</dir>
+            <pos>left</pos>
+        </pin>
+        <pin>
+            <name>s_axis_dividend_tdata</name>
+            <text>s_axis_dividend_tdata</text>
+            <dir>input</dir>
+            <pos>left</pos>
+        </pin>
+        <pin>
+            <name>s_axis_dividend_tvalid</name>
+            <text>s_axis_dividend_tvalid</text>
+            <dir>input</dir>
+            <pos>left</pos>
+        </pin>
+        <pin>
+            <name>s_axis_dividend_tready</name>
+            <text>s_axis_dividend_tready</text>
+            <dir>output</dir>
+            <pos>right</pos>
+        </pin>
+        <pin>
+            <name>s_axis_divisor_tdata</name>
+            <text>s_axis_divisor_tdata</text>
+            <dir>input</dir>
+            <pos>left</pos>
+        </pin>
+        <pin>
+            <name>s_axis_divisor_tvalid</name>
+            <text>s_axis_divisor_tvalid</text>
+            <dir>input</dir>
+            <pos>left</pos>
+        </pin>
+        <pin>
+            <name>s_axis_divisor_tlast</name>
+            <text>s_axis_divisor_tlast</text>
+            <dir>input</dir>
+            <pos>left</pos>
+        </pin>
+        <pin>
+            <name>s_axis_divisor_tready</name>
+            <text>s_axis_divisor_tready</text>
+            <dir>output</dir>
+            <pos>right</pos>
+        </pin>
+        <pin>
+            <name>m_axis_dout_tvalid</name>
+            <text>m_axis_dout_tvalid</text>
+            <dir>output</dir>
+            <pos>right</pos>
+        </pin>
+        <pin>
+            <name>m_axis_dout_tdata</name>
+            <text>m_axis_dout_tdata</text>
+            <dir>output</dir>
+            <pos>right</pos>
+        </pin>
+        <pin>
+            <name>m_axis_dout_tlast</name>
+            <text>m_axis_dout_tlast</text>
+            <dir>output</dir>
+            <pos>right</pos>
+        </pin>
+    </pin_list>
+    <file_list>
+        <output>
+            <file pathname="generate.log" format="log" description="Generate Log"/>
+            <file pathname="example_lutmult_tb.v" format="verilog" description="Compiled File"/>
+            <file pathname="example_lutmult_tmpl.v" format="verilog" description="Instantiation Template"/>
+            <file pathname="example_lutmult_tmpl.vhdl" format="vhdl" description="Instantiation Template"/>
+        </output>
+        <source>
+            <file pathname="Divider_wrapper_example_lutmult.v"/>
+            <file pathname="rtl/lutmult/LutBRAM_example_lutmult.v"/>
+            <file pathname="rtl/lutmult/Lutmult_axi_example_lutmult.v"/>
+            <file pathname="rtl/lutmult/Lutmult_core_example_lutmult.v"/>
+            <file pathname="rtl/lutmult/Lutmult_top_example_lutmult.v"/>
+            <file pathname="rtl/lutmult/Lutmult_tuser_example_lutmult.v"/>
+            <file pathname="rtl/radix2/iteration.v"/>
+            <file pathname="rtl/radix2/radix2_axi_example_lutmult.v"/>
+            <file pathname="rtl/radix2/radix2_clk_per_division_example_lutmult.v"/>
+            <file pathname="rtl/radix2/radix2_example_lutmult.v"/>
+            <file pathname="rtl/radix2/radix2_process_example_lutmult.v"/>
+            <file pathname="rtl/radix2/radix2_tuser_example_lutmult.v"/>
+            <file pathname="rtl/highradix/find_one.v"/>
+            <file pathname="rtl/highradix/nextpreprocess.v"/>
+            <file pathname="rtl/highradix/output_ABW.v"/>
+            <file pathname="rtl/highradix/postprocess.v"/>
+            <file pathname="rtl/highradix/preprocess.v"/>
+            <file pathname="rtl/highradix/SRT4divider_example_lutmult.v"/>
+            <file pathname="rtl/highradix/SRT_AWB_clk6x.v"/>
+            <file pathname="rtl/highradix/SRTdivider_axi_example_lutmult.v"/>
+            <file pathname="rtl/highradix/SRTdivider_tuser_example_lutmult.v"/>
+        </source>
+    </file_list>
+</ip_inst>

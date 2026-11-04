@@ -1,0 +1,16 @@
+{
+  "validated_at": "2026-11-03T17:25:27",
+  "source_root": "C:/Users/NineSun/Desktop/git/50K",
+  "fresh_work_dir": "C:/Users/NineSun/Desktop/git/50K/validation_compile",
+  "pds": "C:/pango/PDS_2022.2-SP6.4/bin/pds_shell.exe",
+  "launcher_pid": 69860,
+  "pds_pid": 107424,
+  "compile": "PASS; Process Compile done; compile -system_verilog -top_module hdmi_ddr_ov5640_top successfully",
+  "wall_time": "1m9s",
+  "peak_memory_mb": 302,
+  "dependency_audit": "280 files hashed, 85 IP source entries, no unresolved dependency",
+  "timing_reviewer_tests": "8 adversarial tests PASS; historical full 2195758665-byte report PASS, 10 sections, no violations",
+  "not_run": ["fresh synthesize", "fresh dev_map", "fresh PnR", "fresh STA", "fresh bitgen", "board access", "flash", "git commit", "network"],
+  "warnings": "Original design dangling/unused logic warnings remain. Compile success is not timing signoff.",
+  "artifact_policy": "Fresh compile cache retained only in ignored validation_compile/ for local inspection; never source-upload. No prebuilt mapped/routed databases or bitstreams in source package."
+}

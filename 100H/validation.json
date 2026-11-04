@@ -1,0 +1,56 @@
+{
+  "status": "RELOCATED_FRESH_COMPILE_PASS_FULL_BUILD_NOT_RUN",
+  "compile": {
+    "pid": 17460,
+    "status": "PASS_COMPILE",
+    "stage": "compile",
+    "work": "C:\\Users\\NineSun\\Desktop\\git\\100H\\validation_work",
+    "pds": "C:\\pango\\PDS_2022.2-SP6.4\\bin\\pds_shell.exe",
+    "pds_sha256": "631ffd8f14d6246872873c72025cbc2734c9f8c388075b7afb0b042f3a684e6f",
+    "started": "2026-11-03T17:22:21.014371",
+    "reference_bitstream_sha256": "3ccdaa213355d9cf1955701993d7e1a3b8826f48fde04d545855ab3712abf50f",
+    "bitstream_generated": false,
+    "board_access": false,
+    "stages": {
+      "compile": {
+        "pid": 63884,
+        "command": [
+          "C:\\pango\\PDS_2022.2-SP6.4\\bin\\pds_shell.exe",
+          "-project",
+          "C:\\Users\\NineSun\\Desktop\\git\\100H\\validation_work\\project.pds",
+          "-run",
+          "compile",
+          "-work_dir",
+          "C:\\Users\\NineSun\\Desktop\\git\\100H\\validation_work"
+        ],
+        "status": "FINISHED",
+        "returncode": 0,
+        "errors": [],
+        "log_sha256": "9997e77d93934cfe47cf3de1aabf133d2115ee5d2b8992567fdc7bdfb58992a4"
+      }
+    },
+    "finished": "2026-11-03T17:25:27.943224"
+  },
+  "compile_output_bytes": 10354937,
+  "compile_output_sha256": "770a403e3a6aa654ed569a50920e158159f6941cc3a019f4ed3667babf309389",
+  "vendor_resolved_init_includes": [
+    "C:/Users/NineSun/Desktop/git/100H/validation_relocated/source/pcie_dma/pcie_dma_ctrl/ips2l_pcie_dma_ram/rtl/ipm2l_sdpram_v1_1_ips2l_pcie_dma_ram.v|C:/Users/NineSun/Desktop/git/100H/validation_relocated/source/pcie_dma/pcie_dma_ctrl/ips2l_pcie_dma_ram/rtl/ips2l_pcie_dma_ram_init_param.v|",
+    "C:/Users/NineSun/Desktop/git/100H/validation_relocated/ipcore/pcie_test/rtl/external_ram/rcv_data_ram/rtl/ipm2l_sdpram_v1_0_rcv_data_ram.v|C:/Users/NineSun/Desktop/git/100H/validation_relocated/ipcore/pcie_test/rtl/external_ram/rcv_data_ram/rtl/rcv_data_ram_init_param.v|",
+    "C:/Users/NineSun/Desktop/git/100H/validation_relocated/ipcore/pcie_test/rtl/external_ram/rcv_header_ram/rtl/ipm2l_sdpram_v1_0_rcv_header_ram.v|C:/Users/NineSun/Desktop/git/100H/validation_relocated/ipcore/pcie_test/rtl/external_ram/rcv_header_ram/rtl/rcv_header_ram_init_param.v|",
+    "C:/Users/NineSun/Desktop/git/100H/validation_relocated/ipcore/pcie_test/rtl/external_ram/retry_data_ram/rtl/ipm2l_spram_v1_0_retry_data_ram.v|C:/Users/NineSun/Desktop/git/100H/validation_relocated/ipcore/pcie_test/rtl/external_ram/retry_data_ram/rtl/retry_data_ram_init_param.v|"
+  ],
+  "vendor_init_include_count": 4,
+  "relocated_manifest_sha256": "df4f21d7d258c76c815f873ebfc9d7f23906ae097f240a86973a63804cde0151",
+  "same_source_ip_build_script_as_delivery": true,
+  "reviewer_tests": "3 unittest cases PASS, including 7 negative report fixtures",
+  "powershell_syntax": "build.ps1 launch.ps1 wait.ps1 PASS",
+  "full_build_started": false,
+  "full_build_reason": "Parent coordinates shared disk and PnR; not authorized to start beyond compile",
+  "disk_free_bytes": 11682107392,
+  "warnings": [
+    "License invalid in 0 days: renewal required; no license copied",
+    "Inherited compile warnings include undriven signals and loops; compile PASS is not functional or board signoff",
+    "Historical 62 input and 71 output timing warnings remain uncorrected"
+  ],
+  "board_access": false
+}

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ip_inst>
+    <header>
+        <vendor>Pango</vendor>
+        <id>052016</id>
+        <display_name>Divider</display_name>
+        <name>Logos2/Titan2/Kosmo2 Divider</name>
+        <version>1.1</version>
+        <instance>lane_divider</instance>
+        <family>Logos2</family>
+        <device>PG2L100H</device>
+        <package>FBG484</package>
+        <speedgrade>-6</speedgrade>
+        <generator version="2022.2-SP6.4" build="146967">IP Compiler</generator>
+    </header>
+    <param_list>
+        <param>
+            <name>DIVIDEND_TREADY</name>
+            <value>1</value>
+        </param>
+        <param>
+            <name>DIVISOR_TREADY</name>
+            <value>1</value>
+        </param>
+        <param>
+            <name>Algorithm_Type</name>
+            <value>1</value>
+        </param>
+        <param>
+            <name>SIGNED</name>
+            <value>0</value>
+        </param>
+        <param>
+            <name>DIVIDEND_WIDTH</name>
+            <value>64</value>
+        </param>
+        <param>
+            <name>DIVISOR_WIDTH</name>
+            <value>64</value>
+        </param>
+        <param>
+            <name>Remainder_Type</name>
+            <value>Remainder</value>
+        </param>
+        <param>
+            <name>RoF_Width</name>
+            <value>0</value>
+        </param>
+        <param>
+            <name>ZERO_DETECT</name>
+            <value>0</value>
+        </param>
+        <param>
+            <name>BLOCKING</name>
+            <value>Non Blocking</value>
+        </param>
+        <param>
+            <name>Optimize_Goal</name>
+            <value>Performance</value>
+        </param>
+        <param>
+            <name>OUTPUT_TREADY</name>
+            <value>0</value>
+        </param>
+        <param>
+            <name>OUTPUT_TLAST</name>
+            <value>0</value>
+        </param>
+        <param>
+            <name>Latency_Configuration</name>
+            <value>Automatic</value>
+        </param>
+        <param>
+            <name>CLK_PER_DIVISION</name>
+            <value>8</value>
+        </param>
+        <param>
+            <name>ACLKEN</name>
+            <value>0</value>
+        </param>
+        <param>
+            <name>ARESETN</name>
+            <value>1</value>
+        </param>
+        <param>
+            <name>TUSER</name>
+            <value>0</value>
+        </param>
+        <param>
+            <name>TLAST</name>
+            <value>0</value>
+        </param>
+    </param_list>
+    <file_list>
+        <output>
+            <file pathname="generate.log" format="log" description="Generate Log"/>
+            <file pathname="example_design/bench/ipsxe_divider_onboard_top_tb.v" format="verilog" description="Compiled File"/>
+            <file pathname="example_design/rtl/ipsxe_divider_onboard_top.v" format="verilog" description="Compiled File"/>
+            <file pathname="sim/modelsim/ipsxe_divider_onboard_top_filelist.f" format="verilog" description="Compiled File"/>
+            <file pathname="pnr/core_only/ipsxe_divider_core_only.v" format="verilog" description="Compiled File"/>
+            <file pathname="lane_divider_tmpl.v" format="verilog" description="Instantiation Template"/>
+            <file pathname="lane_divider_tmpl.vhdl" format="vhdl" description="Instantiation Template"/>
+        </output>
+        <source>
+            <file pathname="lane_divider.v"/>
+            <file pathname="rtl/synplify/ipsxe_divider_core_v1_1_vpAll.vp"/>
+            <file pathname="rtl/fifo/ipsxe_divider_distributed_sdpram_v1_2.v"/>
+        </source>
+    </file_list>
+</ip_inst>
