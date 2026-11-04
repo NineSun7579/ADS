@@ -1,0 +1,12 @@
+{
+  "branch": "ads/production-live-only-20261104",
+  "git_ancestor": "a63b144",
+  "runtime_source_baseline": "epsilon:/home/epsilon/ads-cross-bench/ads-four-fair-20261104/host",
+  "baseline_hashes": {
+    "viewer/main-bev.cpp": "1849300775921b4e16ddfb8e8553e47438ba661e8c55187ec51718e78fdac6ce",
+    "viewer/vision_pipeline.cpp": "66d8a6adce515dc1b0ebdf6e83d473c386b51fb22f361e2f270eb134c0720461",
+    "viewer/detview.pro": "b9a95955fef9b27cbcc859c6c3f7b2cd419b3cd07de5b8c6a89d4a3455c0eb60"
+  },
+  "deployment_authorized_this_task": false,
+  "commit_or_push_authorized_this_task": false
+}

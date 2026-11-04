@@ -1,0 +1,208 @@
+7:#include "perception_replay_input.h"
+137:#include "stereo_demo/stereo_depth.h"
+1222:                    double manualMs = 0, libcMs = 0;
+1227:                            const bool manual = ((repeat + step) % 2) == 0;
+1229:                            if (manual) tdm::copyCameraPixels(scratch.data(), pixels, frameBytes);
+1232:                            if (manual) manualMs += elapsed; else libcMs += elapsed;
+1236:                    copyProbeResult = QString("[capture-copy-probe] camera=%1 bytes=%2 manual_ms=%3 libc_ms=%4 identical=%5")
+1237:                        .arg(camera+1).arg(frameBytes).arg(manualMs/8,0,'f',6).arg(libcMs/8,0,'f',6).arg(int(identical));
+2294:        m_videoSource = source;
+2327:            videoMode = !m_videoSource.isEmpty();
+2932:                    // retained anti-replay floor does. Keep C5 reachable and seed
+4062:            source = m_videoSource;
+4308:    QString m_videoSource;
+4938:        m_manualFormat = info.xyxy;
+4952:        m_manualFormat = xyxy;
+5262:                m_xyxy = cache.size() == 1 ? m_manualFormat.load() : item.info.xyxy;
+6421:    std::atomic<bool> m_manualFormat{false};
+6468:static int visiblePaneMask(const QVector<exact_ui::VideoTile>& tiles, bool videoSource) {
+6469:    if (videoSource) return tiles.isEmpty() ? 0 : 1 << tiles.first().camera;
+6474:static bool navigationAllowed(bool videoSource, exact_ui::Page page) {
+6475:    Q_UNUSED(videoSource); Q_UNUSED(page); return true;
+6477:static bool zoomAllowed(bool videoSource) { return !videoSource; }
+6513:            six_profile::count("revision.perception_replay");
+6519:            six_profile::Scope replayPollProfile("replay_poll",true);
+6520:            six_profile::count("replay.poll");
+6521:            if(replaySelected()&&m_replayExact.updateReplayLaneChangeClock(monotonicMs()))
+6523:            if(replaySelected()&&m_replayExact.updateReplayEmergencyClock(monotonicMs()))
+6525:            QFile file(QStringLiteral("/tmp/ads-replay-media.json"));
+6528:            if(bytes==m_replayMediaBytes) {
+6529:                six_profile::count("replay.bytes_unchanged");
+6530:                const bool controlFresh=QFileInfo(QStringLiteral("/tmp/ads-replay-control.json")).lastModified()
+6532:                if(m_replayMediaActive&&m_replayMediaHeartbeat.elapsed()>2000&&!controlFresh) {
+6534:                    m_replayMediaActive=false;if(m_displaySource.source==display_source::Source::Replay){invalidateExact("exact.replay_timeout");update();}
+6538:            m_replayMediaBytes=bytes;
+6539:            six_profile::count("replay.bytes_changed");
+6540:            six_profile::Scope replayJsonProfile("replay_json");
+6542:            replayJsonProfile.stop();
+6545:                if(m_replayMediaActive){m_replayMediaActive=false;if(m_displaySource.source==display_source::Source::Replay){invalidateExact("exact.replay_inactive");update();}}return;
+6548:            if(!path.startsWith(QStringLiteral("/tmp/ads-replay-")))return;
+6549:            six_profile::Scope replayImageProfile("replay_image_load");
+6550:            QImage image(path);replayImageProfile.stop();if(image.isNull())return;
+6552:            six_profile::Scope replaySceneProfile("replay_scene_decode");
+6554:            replaySceneProfile.stop();
+6555:            m_replayMediaImage=image;
+6556:            m_replayMediaScene=mediaScene;
+6557:            m_replayMediaBindings.clear();
+6559:            for(auto it=bindings.begin();it!=bindings.end();++it)m_replayMediaBindings[it.key()]=it.value().toVariant();
+6560:            m_replayMediaActive=true;m_replayMediaHeartbeat.restart();
+6561:            m_replayEvidenceMeta=state;
+6562:            if(m_displaySource.source==display_source::Source::Replay)syncReplayAction();
+6564:                six_profile::keyed("replay.accepted.design_page.",QString::number(m_designUi->currentPage()));
+6565:            if(replaySelected()){invalidateExact("exact.replay_payload");update();}
+6804:    // same frame can be replayed in ModelSim.
+6951:            m_exact.page==exact_ui::Page::Four,m_exact.panorama,replaySelected())&&!m_videoMode&&!physicalHdmiSelected();
+7240:        m_replayExact=exact_ui::Frontend();m_replayActionSource.clear();
+7241:        m_replayActionIndex=-1;m_replayActionNow=-1;
+7244:        if(m_displaySource.source!=display_source::Source::Replay)return;
+7245:        if(!m_replayMediaActive){clearReplayAction();return;}
+7246:        const auto transport=m_replayEvidenceMeta["replay_evidence"].toObject();
+7248:        const int target=m_replayEvidenceMeta["frameIndex"].toInt(-1);
+7249:        const qint64 now=qint64(m_replayEvidenceMeta["sourceTimeMs"].toDouble(-1));
+7251:        if(source!=m_replayActionSource||target<m_replayActionIndex||now<m_replayActionNow) {
+7252:            clearReplayAction();m_replayEvidenceFrames={};
+7254:            if(!path.startsWith(QStringLiteral("/tmp/ads-replay-")))return;
+7258:            m_replayEvidenceFrames=document["frames"].toArray();
+7259:            if(target>=m_replayEvidenceFrames.size())return;
+7260:            m_replayActionSource=source;m_replayExact.vehicleActionSource="replay:"+source;
+7261:            m_replayExact.replaySignalPredictions=m_replayEvidenceMeta["suite"].toString()==QStringLiteral("t1");
+7262:            m_replayExact.replayLaneChangePredictions=m_replayEvidenceMeta["suite"].toString()==QStringLiteral("t2");
+7263:            m_replayExact.replayEmergencyPredictions=m_replayEvidenceMeta["suite"].toString()==QStringLiteral("t4");
+7264:            m_replayExact.updateReplayLaneChangeClock(monotonicMs());
+7267:            m_replayExact.applyDriveControl(3,false,now);
+7269:            m_replayActionIndex=target-1;
+7271:        if(target>=m_replayEvidenceFrames.size()){clearReplayAction();return;}
+7272:        for(int i=m_replayActionIndex+1;i<=target;++i) {
+7273:            const auto frame=m_replayEvidenceFrames[i].toObject();
+7275:            if(at<0||at<m_replayActionNow){clearReplayAction();return;}
+7276:            m_replayExact.drivingState=frame["evidence"].toObject();
+7277:            m_replayExact.recognitionRunning=frame["recognition"].toBool(true);
+7278:            m_replayExact.updateVehicleAction(at);
+7279:            m_replayActionNow=at;m_replayActionIndex=i;
+7283:        if(m_displaySource.source!=display_source::Source::Replay)return false;
+7285:        m_replayExact.updateReplayLaneChangeClock(monotonicMs());
+7286:        m_replayExact.applyDriveControl(value,false,qMax(qint64(0),m_replayActionNow));
+7287:        m_replayExact.updateVehicleAction(qMax(qint64(0),m_replayActionNow));
+7288:        const auto replayEvidence=m_replayExact.drivingState;
+7289:        fprintf(stderr,"[replay-action-control] %s\n",QJsonDocument(QJsonObject{
+7290:            {"control",value},{"source",m_replayActionSource},{"frameIndex",m_replayActionIndex},
+7291:            {"sourceTimeMs",double(m_replayActionNow)},
+7292:            {"evidenceTimeMs",replayEvidence["timestamp_ms"]},
+7293:            {"requested",m_replayExact.drivingRequested},{"assumedLane",m_replayExact.assumedLane},
+7294:            {"lights_fresh",replayEvidence["lights_fresh"]},
+7295:            {"left",replayEvidence["left"]},{"straight",replayEvidence["straight"]},
+7296:            {"light_groups",replayEvidence["light_groups"]},
+7297:            {"direction_sources",replayEvidence["replay_direction_sources"]},
+7298:            {"lane_change_sources",replayEvidence["replay_lane_change_sources"]},
+7299:            {"left_boundary",replayEvidence["left_boundary"]},
+7300:            {"right_boundary",replayEvidence["right_boundary"]},
+7301:            {"lane_topology",replayEvidence["replay_lane_topology"]},
+7302:            {"state",m_replayExact.vehicleAction.state},
+7303:            {"aeb",m_replayExact.vehicleAction.aeb},
+7304:            {"predictions",QJsonObject::fromVariantMap(m_replayExact.predictionStates)}})
+7316:    void selectDisplaySource(display_source::Source source) {
+7320:        if(source==display_source::Source::Replay)syncReplayAction();
+7323:        if(source==display_source::Source::PhysicalHdmi)m_displayPairAcquisition={};
+7324:        m_replayPerceptionInitialized=false;
+7329:    bool replaySelected() const { return m_displaySource.replay(m_replayMediaActive); }
+7769:        const QRectF localVideoWindow=m_exact.localVideoRect().intersected(QRectF(QPointF(),QSizeF(size())));
+7778:            display_source::pairReady(m_displayPairAcquisition,metricNow,m_capturedMs[4],m_capturedMs[5],
+7889:        if(m_videoMode && hdmiView) fitted.insert(0,fit(localVideoWindow,video.size()));
+8241:                    if(m_displaySource.source==display_source::Source::Replay&&!m_replayMediaActive)clearReplayAction();
+8242:                    const auto& actionUi=m_displaySource.source==display_source::Source::Replay?m_replayExact:m_exact;
+8269:                    const bool replayPage=replaySelected()&&m_designUi->currentPageKey()==QStringLiteral("single");
+8279:                    if(!replayPage||!m_replayPerceptionInitialized)
+8281:                    m_replayPerceptionInitialized=replayPage;
+8329:                        if(replaySelected()&&m_designUi->currentPageKey()==QStringLiteral("single"))
+8330:                            for(auto it=m_replayMediaBindings.cbegin();it!=m_replayMediaBindings.cend();++it) {
+8340:                            if(!(replaySelected()&&m_designUi->currentPageKey()==QStringLiteral("single")&&
+8341:                                 m_replayMediaBindings.contains(key)))
+8446:                    if(replaySelected()&&m_designUi->currentPageKey()==QStringLiteral("single")&&!source.isEmpty()) {
+8453:                            const double fit=qMin(slot.width()/m_replayMediaImage.width(),slot.height()/m_replayMediaImage.height());
+8454:                            const QSizeF extent(m_replayMediaImage.width()*fit,m_replayMediaImage.height()*fit);
+8456:                            chrome.drawImage(QRectF(slot.center()-QPointF(extent.width()/2,extent.height()/2),extent),m_replayMediaImage);
+8493:                    if(m_displaySource.source==display_source::Source::Replay && !replaySelected()) {
+8498:                    if(!physicalHdmiSelected() && m_displaySource.source!=display_source::Source::Replay && !m_videoMode && !(replaySelected()&&m_designUi->currentPageKey()==QStringLiteral("single")) && m_designUi->scene() && !m_designUi->scene()->sceneRect().isEmpty()) {
+8586:            const QRect scissor=(m_avmActive&&!avmRect.isEmpty()?avmRect:localVideoWindow).toAlignedRect();
+8603:        } else if(!physicalHdmiSelected() && m_displaySource.source!=display_source::Source::Replay)
+9249:            if((m_exact.selectingLightRegion && m_exact.localVideoImageRect().contains(m_exactPress)) ||
+9292:            if(m_exact.selectingLightRegion && m_exact.localVideoImageRect().contains(m_exactPress)) {
+9349:        if(replaySelected())return m_replayMediaScene;
+9403:    exact_ui::Frontend m_replayExact;
+9404:    QJsonObject m_replayEvidenceMeta;
+9405:    QJsonArray m_replayEvidenceFrames;
+9406:    QString m_replayActionSource;
+9407:    int m_replayActionIndex=-1;
+9408:    qint64 m_replayActionNow=-1;
+9418:    bool m_replayMediaActive=false;
+9419:    display_source::Selection m_displaySource;
+9424:    bool m_replayPerceptionInitialized=false;
+9425:    QByteArray m_replayMediaBytes;
+9426:    QElapsedTimer m_replayMediaHeartbeat;
+9427:    QImage m_replayMediaImage;
+9428:    perception_bird::Frame m_replayMediaScene;
+9429:    QMap<QString,QVariant> m_replayMediaBindings;
+9930:    DetViewController(const QVector<ModelInfo> &models, const QString &videoSource,
+9956:            // Disarm before dispatch, including replay selection without payload.
+9957:            if(name.startsWith(QStringLiteral("source:")) || name.startsWith(QStringLiteral("page:")))
+9959:            if(display_source::action(name,[this]{
+9965:             },[this](display_source::Source source){m_gl->selectDisplaySource(source);},
+9980:                        m_gl->selectDisplaySource(display_source::Source::Cameras);
+9992:                m_gl->selectDisplaySource(display_source::Source::Cameras);
+10027:        m_videoMode = !videoSource.isEmpty();
+10030:        m_localVideoPath=videoSource;
+10031:        m_localVideoLoop=QCoreApplication::arguments().contains("--video-loop") ||
+10034:            m_camera->setVideoSource(videoSource);
+10035:        m_camera->setVideoLoop(m_localVideoLoop);
+10048:        const QString rangeVideoKey=m_videoMode?QFileInfo(m_localVideoPath).absoluteFilePath():QString();
+10138:                m_gl->exactFrontend().localVideoStatus=s;
+10254:        QRectF configuredRegion=driving_config::load(m_videoMode?QFileInfo(videoSource).absoluteFilePath():QStringLiteral("camera"));
+10263:        m_expectedLights=driving_config::loadExpected(m_videoMode?QFileInfo(videoSource).absoluteFilePath():QStringLiteral("camera"));
+10647:        m_gl->selectDisplaySource(display_source::Source::PhysicalHdmi);
+10663:                else {const auto key=m_videoMode?QFileInfo(m_localVideoPath).absoluteFilePath():QString("camera:%1").arg(next.camera);auto& setting=next.sources[key];
+10693:            const auto source=m_videoMode?QFileInfo(m_localVideoPath).absoluteFilePath():QStringLiteral("camera");
+10725:                const QString source=m_videoMode?QFileInfo(m_localVideoPath).absoluteFilePath():QStringLiteral("camera");
+10726:                if(!driving_config::save(source,region,error)){ui.status=error;ui.localVideoStatus=error;m_gl->exactRefresh();return false;}
+10739:                ui.localVideoStatus.clear();
+10740:            } else {cancelHdmiFusionRetry();stopLocalAvm();ui.localVideoStatus.clear();}
+10746:            QString path=m_localVideoPath;
+10747:            bool loop=m_localVideoLoop;
+10752:                if(action.value>=catalog.size() || action.value>=ui.localVideos.size() ||
+10753:                   QFileInfo(catalog[action.value]).fileName()!=ui.localVideos[action.value]) {
+10754:                    ui.localVideoStatus="视频列表已变化，请重新选择";return false;
+10759:            if(!local_video::save(path,loop,error)) {ui.localVideoStatus=error;return false;}
+10760:            if(action.kind==exact_ui::Action::VideoLoop && path==m_localVideoPath && loop==m_localVideoLoop) return true;
+10761:            if(path.isEmpty() && m_localVideoPath.isEmpty()) {
+10762:                m_localVideoLoop=loop;updateHudLines();return true;
+10766:            ui.localVideoStatus="正在切换输入…";m_gl->exactRefresh();
+10774:            ui.localVideoStatus=m_paused?"本地视频 · 已暂停":"本地视频 · 播放中";
+10797:                m_gl->selectDisplaySource(display_source::Source::Cameras);
+10900:            m_designUi->actionTriggered(QStringLiteral("source:replay"));return;
+10967:        if (k >= Qt::Key_1 && k <= Qt::Key_9) {
+10968:            const int idx = k - Qt::Key_1;
+11110:        const QString videoKey=m_videoMode?QFileInfo(m_localVideoPath).absoluteFilePath():QString();
+11801:        return m_videoMode?QFileInfo(m_localVideoPath).absoluteFilePath():QString("camera:%1").arg(m_gl->exactFrontend().cpuCamera);
+12155:            exact.localVideos.clear();
+12156:            for(const auto& path:local_video::files())exact.localVideos.append(QFileInfo(path).fileName());
+12159:        exact.localVideoActive=m_videoMode;
+12160:        exact.localVideoName=m_videoMode?QFileInfo(m_localVideoPath).fileName():QString();
+12161:        exact.localVideoPaused=m_paused;exact.localVideoLoop=m_localVideoLoop;
+12175:        const QString navKey=m_videoMode?QFileInfo(m_localVideoPath).absoluteFilePath():QString("camera:%1").arg(m_navConfig.camera);
+12219:    QString m_localVideoPath;
+12220:    bool m_localVideoLoop=true,m_sourceReloading=false;
+12407:            "--config-dir","/userdata/surround-view/manual_calibration_v39/lane_fitted",
+12786:    QString videoSource = videoArg >= 0 && videoArg + 1 < args.size()
+12789:        const auto selection=local_video::load(); videoSource=selection.path;
+12792:    if (!videoSource.isEmpty() && !videoSource.contains("://") &&
+12793:        !videoSource.startsWith("/dev/video"))
+12794:        videoSource = QFileInfo(videoSource).absoluteFilePath();
+12795:    if (args.contains("--video-loop") && (videoSource.isEmpty() || videoSource.contains("://") ||
+12796:                                          videoSource.startsWith("/dev/video"))) {
+12799:    if (!videoSource.isEmpty() && !videoSource.contains("://") && !videoSource.startsWith("/dev/video") &&
+12800:        !QFileInfo(videoSource).isFile()) {
+12801:        fprintf(stderr, "video source file does not exist: %s\n", qPrintable(videoSource)); return 2;
+12870:                visionOptions.stereoLeft == visionOptions.stereoRight || !videoSource.isEmpty())
+12894:            if (groupsArg + 1 >= args.size() || !videoSource.isEmpty())
+12972:       (args[resolutionArg+1]!="480" && args[resolutionArg+1]!="720") || !videoSource.isEmpty())) {
+12979:        if(multiResolutionArg+1>=args.size() || !videoSource.isEmpty() || resolutionArg>=0) {
+12996:    DetViewController w(models, videoSource, visionOptions);

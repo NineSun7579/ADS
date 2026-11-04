@@ -1,0 +1,22 @@
+{
+  "family": "Noto Sans SC",
+  "source": "system",
+  "bundled": false,
+  "strategy": "calibrated-system",
+  "calibration": {
+    "fontSize": "design",
+    "baseline": "design",
+    "lineHeight": "design",
+    "letterSpacing": "design"
+  },
+  "mappings": [
+    {
+      "from": "JetBrains Mono",
+      "to": "Noto Sans SC"
+    },
+    {
+      "from": "Noto Sans SC",
+      "to": "Noto Sans SC"
+    }
+  ]
+}

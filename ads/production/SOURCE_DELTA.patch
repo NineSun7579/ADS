@@ -1,0 +1,388 @@
+--- upstream/host/viewer/display_source.h
++++ production/host/viewer/display_source.h
+@@ -19,7 +19,7 @@
+         return true;
+     }
+     if(name==QStringLiteral("source:replay")) {
+-        select(Source::Replay);page(QStringLiteral("single"));return true;
++        return true; // Production consumes and rejects the retired action.
+     }
+     return false;
+ }
+--- upstream/host/viewer/exact_ui.h
++++ production/host/viewer/exact_ui.h
+@@ -102,9 +102,9 @@
+     // isolated t1 signal preview below. FSM defaults never imply permission.
+     QMap<QString,QVariant> predictionStates;
+     // Display-only t1 Replay policy; never enabled for the live Frontend/FSM.
+-    bool replaySignalPredictions=false;
+-    bool replayLaneChangePredictions=false;
+-    bool replayEmergencyPredictions=false;
++    static constexpr bool replaySignalPredictions=false;
++    static constexpr bool replayLaneChangePredictions=false;
++    static constexpr bool replayEmergencyPredictions=false;
+     bool replayEmergencyBlinkPhase=true;
+     bool updateReplayEmergencyClock(qint64 wallNow) {
+         const bool phase=status_bar::blinkPhase(wallNow);
+@@ -895,11 +895,7 @@
+         l.videoPause={l.videoStatus.right()+gap,controlY,buttonW,controlH};
+         l.videoLoop={l.videoPause.right()+gap,controlY,buttonW,controlH};
+         l.videoCamera={l.videoLoop.right()+gap,controlY,buttonW,controlH};
+-        hit(l.videoSelect,"local-video-select",QStringLiteral("选择本地视频"),Action::None,-3,0,true,1);
+         hit(l.panoramaButton,"hdmi-panorama",QStringLiteral("全景融合"),Action::HdmiPanorama,-1,hdmiPanoramaActive?0:1,true,1);
+-        hit(l.videoPause,"local-video-pause",QStringLiteral("播放/暂停"),Action::VideoPause,-1,0,localVideoActive);
+-        hit(l.videoLoop,"local-video-loop",QStringLiteral("循环播放"),Action::VideoLoop,-1,localVideoLoop?0:1);
+-        hit(l.videoCamera,"local-video-camera",QStringLiteral("相机输入"),Action::LocalVideo,-1,-1,localVideoActive);
+         const qreal vy=l.videoSelect.bottom()+s(2),vh=std::max(fs(160),h-vy-py-s(2)-fs(16));
+         l.hdmi={px,vy,cw,vh};
+         // Absolute positions are relative to the video's padding box, inside its 1px border.
+@@ -1663,12 +1659,8 @@
+         heading(p,l.title,page==Page::Six?QStringLiteral("六路"):page==Page::Four?QStringLiteral("四路"):QStringLiteral("HDMI 输入"),page==Page::Hdmi?24:18);
+         if(page==Page::Hdmi) {
+             status_bar::source(p,l.videoSelect,l.videoStatus,
+-                localVideoName.isEmpty()?QStringLiteral("选择本地视频"):localVideoName,
+-                !localVideoStatus.isEmpty()?localVideoStatus:localVideoActive?(localVideoPaused?QStringLiteral("本地视频 · 已暂停"):QStringLiteral("本地视频 · 播放中")):QStringLiteral("HDMI 输入"));
++                QStringLiteral("物理 HDMI"),QStringLiteral("真实输入"));
+             button(p,l.panoramaButton,hdmiPanoramaActive?QStringLiteral("退出全景"):QStringLiteral("全景融合"));
+-            button(p,l.videoPause,localVideoPaused?QStringLiteral("继续"):QStringLiteral("暂停"),QString(),false,localVideoActive);
+-            button(p,l.videoLoop,localVideoLoop?QStringLiteral("循环：开"):QStringLiteral("循环：关"));
+-            button(p,l.videoCamera,QStringLiteral("相机输入"),QString(),false,localVideoActive);
+             box(p,l.hdmi,Qt::transparent,border(),12);
+              const QRectF videoWindow=hdmiVideoRect().translated(0,offset());
+              box(p,videoWindow.adjusted(-1,-1,1,1),Qt::transparent,border(),2);
+@@ -1944,7 +1936,7 @@
+         case Action::Panorama:panorama=a.value!=0;zoomCamera=-1;break;
+         case Action::HdmiPanorama:hdmiPanoramaActive=a.value==0;break;
+         case Action::Lamp: // Demo interaction explicitly present in original HTML.
+-            if(a.camera==0)leftSignal=a.value!=0;else rightSignal=a.value!=0;break;
++            break; // Physical detections are the only signal evidence in production.
+         case Action::TagScroll:break;
+         default:break;
+         }
+--- upstream/host/viewer/live_npu_policy.h
++++ production/host/viewer/live_npu_policy.h
+@@ -18,7 +18,4 @@
+ inline double completedFps(double completed,qint64 sampleAgeMs) {
+     return sampleAgeMs>=0&&sampleAgeMs<1500&&std::isfinite(completed)&&completed>0?completed:0;
+ }
+-inline QImage blackInput(int width,int height) {
+-    QImage image(width,height,QImage::Format_RGB888);image.fill(Qt::black);return image;
+ }
+-}
+--- upstream/host/viewer/main-bev.cpp
++++ production/host/viewer/main-bev.cpp
+@@ -4,7 +4,7 @@
+ #include "exact_ui.h"
+ #include "ui/designview.h"
+ #include "perception_bird.h"
+-#include "perception_replay_input.h"
++#include "production_contract.h"
+ #include "display_source.h"
+ #include "display_timeout_recovery.h"
+ #include "hdmi_preprocess_worker.h"
+@@ -117,7 +117,6 @@
+ #include "six_profile.h"
+ #include "hdmi_frame.h"
+ #include "hdmi_fisheye_publisher.h"
+-#include "local_video_input.h"
+ #include "hdmi_view.h"
+ #include "input_scale.h"
+ #include "cam34_six.h"
+@@ -2290,8 +2289,11 @@
+         m_paused = paused;
+     }
+     void setVideoSource(const QString &source) {
++        Q_UNUSED(source); return;
++#if ADS_ENABLE_TEST_INPUTS
+         QMutexLocker lock(&m_configMutex);
+         m_videoSource = source;
++#endif
+     }
+     void setVideoLoop(bool loop) {
+         QMutexLocker lock(&m_configMutex);
+@@ -4055,6 +4057,7 @@
+                        (overrideMode >= 0 ? overrideMode == 1 : m_hdmiPrefer.load() == 1);
+     }
+     void runVideo() {
++#if ADS_ENABLE_TEST_INPUTS
+         QString source;
+         bool loop;
+         {
+@@ -4207,6 +4210,8 @@
+             fprintf(stderr, "[video] decoder error: %s\n", errors.constData());
+             emit statusMsg("视频解码异常结束");
+         }
++    }
++#endif
+     }
+     bool publishVideoFrame(const QImage &owned, int generation, qint64 capturedMs, double fps,
+                             tdm::FrameRate *captureRate = nullptr,quint64 continuity=0) {
+@@ -4326,6 +4331,7 @@
+     void stop() { stopping_ = true; }
+ protected:
+     void run() override {
++#if ADS_ENABLE_TEST_INPUTS
+         const int cameras[4] = {0, 2, 3, 4};
+         const char *names[4] = {"front.mp4", "left.mp4", "right.mp4", "back.mp4"};
+         cv::VideoCapture captures[4];
+@@ -4375,6 +4381,7 @@
+             while (!stopping_ && clock.elapsed() < target) msleep(1);
+         }
+         for (auto &capture : captures) capture.release();
++#endif
+     }
+ private:
+     QString dir_;
+@@ -4888,6 +4895,7 @@
+     void submit(const QImage &img, quint64 epoch = 0, int sourceGeneration = 0, quint64 frameId = 0,
+                 std::shared_ptr<scheme2::Input> fpgaInput = {}, tdm::InferAge age = {},
+                 acquisition::Ticket ticket = {}, quint64 continuity = 0, bool syntheticBlack = false) {
++        if(syntheticBlack) return;
+         QMutexLocker lock(&m_mutex);
+         // Identity is retained per frame, not reconstructed from latest UI state.
+         if(m_signPipeline && !syntheticBlack) {
+@@ -5671,7 +5679,7 @@
+             lap.start();
+         // The square producer contract stays unchanged. Only the network feed
+         // is cropped; restoreCanonicalDetections reverses this after decode.
+-        QImage rgb = m_runningSynthetic?live_npu::blackInput(m_geometry.width,m_geometry.height):
++        QImage rgb =
+             (m_boundInput ? QImage() : (m_lane6D3a ? lane6::networkRgbFrame(src) : tdm::networkRgbFrame(src, m_geometry)));
+         // QPainter-backed preprocessing can return RGB32: RKNN needs packed RGB888.
+         if (!m_boundInput && (m_det640S4 || m_lane6D3a)) rgb = rgb.convertToFormat(QImage::Format_RGB888);
+@@ -6509,6 +6517,7 @@
+         /* camview [SURF]：先按屏幕尺寸建表面，避免交换链残留旧尺寸 */
+         const QRect sg = QGuiApplication::primaryScreen()->geometry();
+         resize(sg.size());
++#if ADS_ENABLE_TEST_INPUTS
+         new perception_bird::ReplayInput(this,[this](bool active,const perception_bird::Frame& frame){
+             six_profile::count("revision.perception_replay");
+             m_perceptionReplayActive=active;m_perceptionReplayFrame=frame;
+@@ -6564,6 +6573,7 @@
+                 six_profile::keyed("replay.accepted.design_page.",QString::number(m_designUi->currentPage()));
+             if(replaySelected()){invalidateExact("exact.replay_payload");update();}
+         });mediaPoll->start(16);
++#endif
+     }
+     ~DetView() override {
+         if (!context()) return;
+@@ -7241,6 +7251,8 @@
+         m_replayActionIndex=-1;m_replayActionNow=-1;
+     }
+     void syncReplayAction() {
++        return;
++#if ADS_ENABLE_TEST_INPUTS
+         if(m_displaySource.source!=display_source::Source::Replay)return;
+         if(!m_replayMediaActive){clearReplayAction();return;}
+         const auto transport=m_replayEvidenceMeta["replay_evidence"].toObject();
+@@ -7278,8 +7290,11 @@
+             m_replayExact.updateVehicleAction(at);
+             m_replayActionNow=at;m_replayActionIndex=i;
+         }
++#endif
+     }
+     bool applyReplayDriveControl(int value) {
++        Q_UNUSED(value); return false;
++#if ADS_ENABLE_TEST_INPUTS
+         if(m_displaySource.source!=display_source::Source::Replay)return false;
+         syncReplayAction();
+         m_replayExact.updateReplayLaneChangeClock(monotonicMs());
+@@ -7304,6 +7319,7 @@
+             {"predictions",QJsonObject::fromVariantMap(m_replayExact.predictionStates)}})
+             .toJson(QJsonDocument::Compact).constData());
+         m_exact.pressedDrive.clear();exactRefresh();return true;
++#endif
+     }
+     void attachDesignUi(DesignView *view) { m_designUi = view; }
+     void setNpuCompletedRate(double fps) {
+@@ -7314,6 +7330,7 @@
+         m_designUi->showPage(key);m_lastDesignPage=int(m_exact.page);exactRefresh();
+     }
+     void selectDisplaySource(display_source::Source source) {
++        if(source==display_source::Source::Replay) return;
+         clearRange();
+         clearReplayAction();
+         m_displaySource.select(source);
+@@ -9346,8 +9363,6 @@
+ 
+     perception_bird::Frame perceptionBirdFrame(qint64 now) {
+         if(physicalHdmiSelected())return {};
+-        if(replaySelected())return m_replayMediaScene;
+-        if(m_perceptionReplayActive)return m_perceptionReplayFrame;
+         lane_arbitration::Snapshot scene;
+         QVector<Detection> detections;QStringList classes;
+         {
+@@ -10028,8 +10043,7 @@
+         m_autoStartSourcePending = !m_videoMode && !m_calibrationMode &&
+             qEnvironmentVariable("ADS_AUTO_START_SOURCE") == QStringLiteral("1");
+         m_localVideoPath=videoSource;
+-        m_localVideoLoop=QCoreApplication::arguments().contains("--video-loop") ||
+-            (!QCoreApplication::arguments().contains("--video") && local_video::load().loop);
++        m_localVideoLoop=false;
+         if (m_videoMode)
+             m_camera->setVideoSource(videoSource);
+         m_camera->setVideoLoop(m_localVideoLoop);
+@@ -10742,6 +10756,8 @@
+             return true;
+         }
+         if(action.kind==exact_ui::Action::LocalVideo || action.kind==exact_ui::Action::VideoLoop) {
++            ui.status="正式版仅支持真实相机和物理 HDMI";return false;
++#if ADS_ENABLE_TEST_INPUTS
+             if(m_sourceReloading) return false;
+             QString path=m_localVideoPath;
+             bool loop=m_localVideoLoop;
+@@ -10767,6 +10783,7 @@
+             // Unwind all worker/application owners before main re-executes this
+             // process. Retain the systemd PID and avoid startup rate limits.
+             QTimer::singleShot(100,this,[]{QCoreApplication::exit(42);});return true;
++#endif
+         }
+         if(action.kind==exact_ui::Action::VideoPause) {
+             if(!m_videoMode) return false;
+@@ -10897,7 +10914,10 @@
+ 
+     void handleKey(QKeyEvent *e) {
+         if(e->key()==Qt::Key_F8) {
++            return;
++#if ADS_ENABLE_TEST_INPUTS
+             m_designUi->actionTriggered(QStringLiteral("source:replay"));return;
++#endif
+         }
+         if(e->key()>=Qt::Key_F6 && e->key()<=Qt::Key_F9) {
+             exact_ui::Action action;action.kind=exact_ui::Action::ViewerControl;action.value=e->key()-Qt::Key_F6;
+@@ -11222,10 +11242,12 @@
+             // The signal marker survives queued GUI delivery across page changes.
+             // RKNN itself receives epoch=0 to keep four-page work synchronous in its worker.
+             if(epoch==VisionPipeline::FourRequest)epoch=0;
+-            if(frame.syntheticBlack) {
++            if(frame.syntheticBlack) { return;
++#if ADS_ENABLE_TEST_INPUTS
+                 if(!m_recognitionRunning.load()){vision->inferenceFailed(frame.sourceGeneration,frame.frameId,epoch);return;}
+                 const tdm::InferAge paddingAge{frame.frameId,frame.sourceGeneration,-1,0,-1};
+                 infer->submit(frame.image,0,frame.sourceGeneration,frame.frameId,{},paddingAge,{},0,true);return;
++#endif
+             }
+             if(!m_recognitionRunning.load() || !acquisition::current(frame.acquisition)) {
+                 if(frame.fpgaInput)frame.fpgaInput->complete();
+@@ -12153,7 +12175,6 @@
+         const auto videoListNow=monotonicMs();
+         if(m_videoListAt<0 || (exact.page==exact_ui::Page::Hdmi && videoListNow-m_videoListAt>=1000)) {
+             exact.localVideos.clear();
+-            for(const auto& path:local_video::files())exact.localVideos.append(QFileInfo(path).fileName());
+             m_videoListAt=videoListNow;
+         }
+         exact.localVideoActive=m_videoMode;
+@@ -12526,6 +12547,28 @@
+ }
+ #else
+ static int runAds(int argc, char **argv) {
++    const QSet<QString> productionOptions={"--fullscreen","--camera","--model","--model-index",
++        "--prefer-hdmifull","--rotate-model","--duration","--shot","--calibration-capture",
++        "--camera-resolution","--cam1-resolution","--detect-interval-ms","--detect-min-ms",
++        "--track-interval-ms","--track-max-age-ms","--track-template-side","--max-tracks",
++        "--motion-gating","--no-motion-gating","--motion-refresh-ms","--no-tracking",
++        "--no-temporal-filter","--stereo","--stereo-calibration","--stereo-config",
++        "--stereo-disparities","--stereo-interval-ms","--stereo-scale","--stereo-synchronized",
++        "--stereo-tag-offset","--stereo-trial-meters","--stereo-vehicle-trial",
++        "--tt100k-crop-model"};
++    for(int i=1;i<argc;++i) {
++        const QString option=QString::fromLocal8Bit(argv[i]);
++        if(option.contains("selftest",Qt::CaseInsensitive) || option.contains("replay",Qt::CaseInsensitive) ||
++           option.startsWith("--video") || option.startsWith("--local-video") ||
++           option.startsWith("--remote") || option.startsWith("--http") ||
++           option.startsWith("--simulate") || option.startsWith("--demo") || option.contains("preview") ||
++           option=="--tracker-benchmark" ||
++           option=="--scenario" || option=="--suite" ||
++           (option.startsWith("--") && !productionOptions.contains(option)) ||
++           (option.size()==2 && option[0]=='t' && option[1]>='1' && option[1]<='5')) {
++            fprintf(stderr,"ADS production rejects test/remote input: %s\n",argv[i]); return 2;
++        }
++    }
+     std::fprintf(stderr, "[input480] ADS_INPUT_480P=%s (fit|stretch|crop|off)\n",
+                  input480::name(input480::mode()));
+     for(int i=1;i+3<argc;++i) {
+@@ -12782,6 +12825,8 @@
+             fprintf(stderr, "[rotate-count] %s %d\n", qPrintable(model.path), counts.value(model.path));
+         return rc;
+     }
++    const QString videoSource;
++#if ADS_ENABLE_TEST_INPUTS
+     const int videoArg = args.indexOf("--video");
+     QString videoSource = videoArg >= 0 && videoArg + 1 < args.size()
+         ? args[videoArg + 1] : QString();
+@@ -12800,6 +12845,7 @@
+         !QFileInfo(videoSource).isFile()) {
+         fprintf(stderr, "video source file does not exist: %s\n", qPrintable(videoSource)); return 2;
+     }
++#endif
+     int hdmiPrefer = 1;   // --prefer-hdmifull：0=off 1=on 2=auto（默认）
+     VisionOptions visionOptions;
+     try {
+@@ -13041,6 +13087,8 @@
+     return app.exec();
+ }
+ int main(int argc,char** argv) {
++    return runAds(argc,argv);
++#if ADS_ENABLE_TEST_INPUTS
+     const int result=runAds(argc,argv);
+     if(result!=42) return result;
+     // runAds returned only after CameraThread/FFmpeg, VisionPipeline, RKNN and
+@@ -13057,6 +13105,7 @@
+     for(int fd:g_termPipe) if(fd>=0) ::close(fd);
+     ::execv("/proc/self/exe",arguments.data());
+     std::perror("ADS input reload failed");return 1;
++#endif
+ }
+ #endif
+ 
+--- upstream/host/viewer/vision_pipeline.cpp
++++ production/host/viewer/vision_pipeline.cpp
+@@ -127,8 +127,6 @@
+     std::optional<Pending> fourBusy; // Physical job survives page/source invalidation.
+     std::array<quint64,4> fourCompleted{}, fourBlackCompleted{};
+     qint64 fourLastMs=-1;
+-    quint64 blackSequence=0;
+-    QImage blackImage;
+     // Camera DMA remains independent from analytics. Owned RAW RGB images use
+     // the existing conventional RKNN context, including cameras without coherent
+     // FPGA RGB support. This never holds the display/HDMI physical input lease.
+@@ -154,18 +152,14 @@
+                     ready|=1u<<i;
+                 }
+             }
+-            const int i=fourFair.choose(15);
++            const int i=fourFair.choose(ready);
++            if(i<0) return; // No fresh physical input: no RKNN job or throughput credit.
+             VisionFrame f;
+             if(ready&(1u<<i)) {
+                 f=frameSlots[FourFair::cameras[i]].back();
+                 cancelUnsubmitted(f);f.fpgaInput.reset();
+                 submittedThrough[{config.generation,f.camera}]=f.frameId;
+                 while(submittedThrough.size()>24)submittedThrough.erase(submittedThrough.begin());
+-            } else {
+-                if(blackImage.isNull()){blackImage=QImage(640,480,QImage::Format_RGB888);blackImage.fill(Qt::black);}
+-                f.image=blackImage;f.syntheticBlack=true;f.camera=FourFair::cameras[i];
+-                f.sourceGeneration=config.generation;f.frameId=(quint64(1)<<63)|++blackSequence;
+-                f.capturedMs=-1;f.tag=0; // No invented capture timestamp, tag, ticket or camera frame identity.
+             }
+             Pending p{config.epoch,f.frameId,config.generation,now,f.capturedMs,f.camera,f.tag,{}};
+             p.acquisition=f.acquisition;p.syntheticBlack=f.syntheticBlack;pending=p;fourBusy=p;epoch=config.epoch;
+--- /dev/null
++++ production/host/viewer/ads-production.pro
+@@ -0,0 +1,5 @@
++include(detview.pro)
++TARGET = ads-production-live
++DEFINES += ADS_PRODUCTION_LIVE_ONLY=1
++contains(CONFIG, runtime_ui_test): error("Production cannot build runtime_ui_test")
++HEADERS += production_contract.h
+--- /dev/null
++++ production/host/viewer/production_contract.h
+@@ -0,0 +1,8 @@
++#pragma once
++#if defined(ADS_ENABLE_TEST_INPUTS) && ADS_ENABLE_TEST_INPUTS
++#error "ADS production forbids simulated, replay and remote inputs"
++#endif
++#define ADS_ENABLE_TEST_INPUTS 0
++#ifndef ADS_PRODUCTION_LIVE_ONLY
++#error "Build with ads-production.pro"
++#endif

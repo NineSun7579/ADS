@@ -1,0 +1,15 @@
+* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+*.sh text eol=lf
+ui/assets/images/* binary
+host/viewer/ui/assets/images/* binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+# Preserve upstream whitespace verbatim and ignore unified-diff context markers.
+host/viewer/rknn_api.h -whitespace
+host/viewer/mono_motion.h -whitespace
+SOURCE_DELTA.patch -whitespace

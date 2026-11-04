@@ -1,0 +1,553 @@
+{
+  "formatVersion": "2.0",
+  "apiVersion": 1,
+  "current": "assets",
+  "designs": {
+    "token": "assets/design.json",
+    "resolved": "assets/design.resolved.json",
+    "pretty": "assets/design.pretty.json"
+  },
+  "mode": "resolved",
+  "entryDesign": "assets/design.resolved.json",
+  "pages": [
+    {
+      "key": "single",
+      "id": "3:7426",
+      "canvas": {
+        "w": 1600,
+        "h": 1120
+      },
+      "inputSource": "HDMI"
+    },
+    {
+      "key": "multi",
+      "id": "3:7784",
+      "canvas": {
+        "w": 1600,
+        "h": 1120
+      },
+      "inputSource": "OV5640"
+    },
+    {
+      "key": "space",
+      "id": "3:8118",
+      "canvas": {
+        "w": 1600,
+        "h": 1120
+      },
+      "inputSource": "HDMI"
+    },
+    {
+      "key": "four",
+      "id": "30:768",
+      "canvas": {
+        "w": 1600,
+        "h": 1120
+      },
+      "inputSource": "OV5640"
+    },
+    {
+      "key": "six",
+      "id": "37:1045",
+      "canvas": {
+        "w": 1600,
+        "h": 1120
+      },
+      "inputSource": "OV5640"
+    }
+  ],
+  "bindings": [
+    {
+      "name": "channel.connected",
+      "type": "boolean",
+      "indexed": true,
+      "indexKind": "channelIndex",
+      "indexValues": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "channel.distance",
+      "type": "number",
+      "indexed": true,
+      "indexKind": "channelIndex",
+      "indexValues": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "channel.distanceSegments",
+      "type": "integer",
+      "indexed": true,
+      "indexKind": "channelIndex",
+      "indexValues": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "channel.distanceUnit",
+      "type": "enum",
+      "indexed": true,
+      "indexKind": "channelIndex",
+      "indexValues": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "channel.distanceValue",
+      "type": "number",
+      "indexed": true,
+      "indexKind": "channelIndex",
+      "indexValues": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "channel.name",
+      "type": "string",
+      "indexed": true,
+      "indexKind": "channelIndex",
+      "indexValues": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "channel.number",
+      "type": "integer",
+      "indexed": true,
+      "indexKind": "channelIndex",
+      "indexValues": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "channel.secondaryTargetLabel",
+      "type": "string",
+      "indexed": true,
+      "indexKind": "channelIndex",
+      "indexValues": [
+        0,
+        3
+      ]
+    },
+    {
+      "name": "channel.targetLabel",
+      "type": "string",
+      "indexed": true,
+      "indexKind": "channelIndex",
+      "indexValues": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "channel.videoInfo",
+      "type": "string",
+      "indexed": true,
+      "indexKind": "channelIndex",
+      "indexValues": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "frame",
+      "type": "image",
+      "indexed": true,
+      "indexKind": "channelIndex",
+      "indexValues": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "gauge.distanceCaption",
+      "type": "string",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "stats.count",
+      "type": "integer",
+      "indexed": true,
+      "indexKind": "bindingIndex",
+      "indexValues": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "name": "stats.fusedCount",
+      "type": "integer",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "traffic.distance",
+      "type": "number",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "traffic.light",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.changeLeft",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.changeRight",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.drive",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.left",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.predictionEmergency",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.predictionLeft",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.predictionRight",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.predictionStop",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.predictionStraight",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.predictionViolation",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.right",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.stop",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.straight",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "ui.traffic",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "vehicle.laneSelection",
+      "type": "enum",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "vehicle.nextAction",
+      "type": "string",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    },
+    {
+      "name": "vehicle.selectedHint",
+      "type": "string",
+      "indexed": false,
+      "indexKind": null,
+      "indexValues": []
+    }
+  ],
+  "requires": {
+    "tokenResolution": false,
+    "minQt": "5.15",
+    "externalAssets": true,
+    "systemFonts": [
+      "Noto Sans SC"
+    ],
+    "facadeApi": 1,
+    "features": [
+      "stable-page-keys",
+      "indexed-bindings",
+      "control-interaction",
+      "center-path-bounds",
+      "segment-style",
+      "parent-bounded-drag"
+    ]
+  },
+  "fonts": {
+    "family": "Noto Sans SC",
+    "source": "system",
+    "bundled": false,
+    "strategy": "calibrated-system",
+    "calibration": {
+      "fontSize": "design",
+      "baseline": "design",
+      "lineHeight": "design",
+      "letterSpacing": "design"
+    },
+    "mappings": [
+      {
+        "from": "JetBrains Mono",
+        "to": "Noto Sans SC"
+      },
+      {
+        "from": "Noto Sans SC",
+        "to": "Noto Sans SC"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "assets/bindings.json",
+      "sha256": "ae46da58a3781f48c98fb84227be0cac45d3e2a5a3f9f871cf81230b6d774cbd",
+      "bytes": 7937
+    },
+    {
+      "path": "assets/CONTROL_INPUTS.md",
+      "sha256": "e04cf3fc98d2ccc17bcd95235eee806340f1155ba374ec56e5ee7bf1de9315dc",
+      "bytes": 2149
+    },
+    {
+      "path": "assets/conversion-report.json",
+      "sha256": "220d5146ad3455acfccf447840d67beca56d1421e95b384db80cc3fcb44a38ed",
+      "bytes": 23830
+    },
+    {
+      "path": "assets/design-contract.md",
+      "sha256": "ad5ffaa3df300bc98eae393ab912a3cfb9033f1c473fd5ef80ac60f7811b1b09",
+      "bytes": 12597
+    },
+    {
+      "path": "assets/design.json",
+      "sha256": "92d52da7838b48730011216ec6e2f78d7a3c1bd76c02820efbe494383a6288de",
+      "bytes": 1734785
+    },
+    {
+      "path": "assets/design.pretty.json",
+      "sha256": "9a05700a46b22aa5cb2a6a41a44d66e1a51d788a36def90aa63d5ee789d5b417",
+      "bytes": 10636665
+    },
+    {
+      "path": "assets/design.resolved.json",
+      "sha256": "47a0a7f4b02b1c6daba5bb6c0f4f948110208bc0051ee2d8e66dbbcec01957f1",
+      "bytes": 1812471
+    },
+    {
+      "path": "assets/font-map.json",
+      "sha256": "1bb4a401b359c712ce0dce592a36b24c09fa78e637543e87008dc94b5a6362b0",
+      "bytes": 404
+    },
+    {
+      "path": "assets/images/17bc74d829d1effbf36bf3cfe5c55c1fecf6c91a",
+      "sha256": "553c33f850bed6248a105759d0e19cc945d72367e5bbc22c5021e522fdb32001",
+      "bytes": 230519
+    },
+    {
+      "path": "assets/images/23e66c2b192524a9a8ad545dc18840661be7336c",
+      "sha256": "e7fa8f33cf5f686cf3c9ec3c406fb8ea5880ed0cc059c9d8463f9dcb67230f12",
+      "bytes": 356303
+    },
+    {
+      "path": "assets/images/27412a48ee7424f23e614071fb6505e43dc8235e",
+      "sha256": "c0a1f0c27650b4039e293986f3fb2eb4e25905ee32e55ccc5c6400fd854df650",
+      "bytes": 93289
+    },
+    {
+      "path": "assets/images/2e7241e7038e6724a31cedfa2e541dbfe481907f",
+      "sha256": "233c1a75ff6b053fc4c99d416aef8b64743c1c7cacaa97f7fe0899400e0cdee6",
+      "bytes": 14113
+    },
+    {
+      "path": "assets/images/476292372bf7b09d4c137eaa69abf595043214af",
+      "sha256": "9267e9bff0e95e69b96d708077fb25ed53bcd8bbf6440f1485dabc9704dd6271",
+      "bytes": 2519
+    },
+    {
+      "path": "assets/images/52cb554fe8b24321639da946f7d246da62860a4a",
+      "sha256": "367dfa29c8d4d9813f20f298650ef8167bd765ff5d2883ff52c2f292c40c4362",
+      "bytes": 230966
+    },
+    {
+      "path": "assets/images/6be549c913085769d826873fb214c60d53708bf9",
+      "sha256": "8f0a998e69d8f252e0884f148286d994f251f2a7ec79366a9955b23ffb863c3a",
+      "bytes": 87160
+    },
+    {
+      "path": "assets/images/6cefbec025cba355ac70646ea2203ee19805f4e3",
+      "sha256": "dc5fb75cebfc7b6ef939a81b02e82a7cacb7f42fe172bd6ba59487d7b78ff4c9",
+      "bytes": 480028
+    },
+    {
+      "path": "assets/images/74127ea5d10358b4da0c4daeb6e406c0754aa5a0",
+      "sha256": "a7f9f6db052945bdd0412a3ff4ed96288dab520d9904dd89b69c9db845b733ec",
+      "bytes": 78804
+    },
+    {
+      "path": "assets/images/755d01a2a58ef1eca6069fa555b08a85d1b49066",
+      "sha256": "6f1205ffb281468bff88ad3e9c7a107446d1a45ce41a9f87e067edd1b2f5f2a1",
+      "bytes": 12241
+    },
+    {
+      "path": "assets/images/78032476a55aac86932ab5e8f8f7034a3144a0a0",
+      "sha256": "b12c19ec62f0b775117ba18ceeddb930f7b43676056ecbc33fe0aebdf5bc9f30",
+      "bytes": 313737
+    },
+    {
+      "path": "assets/images/7ac2cf19a4062995ff92950dd2cc26c572d4c999",
+      "sha256": "7cdb3a8f2adeaae9a49b53b6f5c91f7b074bf79debdc5a6a410c321712ff408e",
+      "bytes": 1238556
+    },
+    {
+      "path": "assets/images/88cabe923c026a595792948dbdc4fc974b1a5300",
+      "sha256": "1d2974609c6be761183ff450c1150a8231707cc1cd7e18f79be5d05de1dc9ff7",
+      "bytes": 885618
+    },
+    {
+      "path": "assets/images/916698be39a32d6a74132758c0790035e5e10a87",
+      "sha256": "dc773d61ab5f542039f9b29cff01b0626c618bfb670d05e33852974bbb8ade95",
+      "bytes": 2223
+    },
+    {
+      "path": "assets/images/9f1dd2f69157d1951e94e4b5cc42725a8e80ce60",
+      "sha256": "d049910592d719754a089d5091b5437a0d59b4d6715c22278dd76bfa889143d2",
+      "bytes": 96679
+    },
+    {
+      "path": "assets/images/b4a0a6fcce66663fd3eb1a127d9a8498d1c05a64",
+      "sha256": "7d357e69db28c0f5300cad39f081916036264a34f90065d9191ccf522cdf6cd4",
+      "bytes": 401962
+    },
+    {
+      "path": "assets/images/d303c04e97138670c4de2ea16607c2a9dc15977b",
+      "sha256": "813f3ea061e84040cfa61e6851853fd01e1c335d91e50acb1a6d4567049e7ef4",
+      "bytes": 382840
+    },
+    {
+      "path": "assets/images/ebf9b8b049ff57733782c8fdf0bda3a3e3e684e7",
+      "sha256": "9991ecb8ac565be5947b44f0e8748f8682e100277a985b00c54c7239860d29e9",
+      "bytes": 352016
+    },
+    {
+      "path": "assets/images/f68cea7fa9abb08ff5a7e34e6f6c1fdfc7dec60a",
+      "sha256": "f0c1ba55b352d4dd7e1ab65cf4e1462af01d5f2d8af3080d9a895db6372c1845",
+      "bytes": 12759
+    },
+    {
+      "path": "assets/images/fb39248308c8e3781d75e86c249ca8b70e661304",
+      "sha256": "be547b35075ef834e8e61bc9afa74f09b785c872265dc0889b86ae58886ac189",
+      "bytes": 472399
+    },
+    {
+      "path": "assets/images/fe11113d11919bb8e10b0ce97aee9f7eea01deec",
+      "sha256": "8b8cd0387862f407861350026a6d743f40bd81d9b16fdb7cbb3f76bd26d77815",
+      "bytes": 3448
+    },
+    {
+      "path": "assets/semantic-map.json",
+      "sha256": "6a3b5e705fee203f1c08eef44f48c0020687fd1f51df1c7f95d75f540ae979ec",
+      "bytes": 276544
+    },
+    {
+      "path": "assets/tokens.json",
+      "sha256": "d3b37f909ceb5adbab001a9b9b68f19319730ec4bcddc4b0be1bec6191a3b52d",
+      "bytes": 1969
+    }
+  ]
+}

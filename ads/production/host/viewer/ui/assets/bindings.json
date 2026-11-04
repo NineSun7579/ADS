@@ -1,0 +1,397 @@
+{
+  "version": 2,
+  "bindings": {
+    "frame": {
+      "type": "image",
+      "emptyText": "",
+      "freshnessMs": 1500
+    },
+    "channel.name": {
+      "type": "string",
+      "emptyText": "未连接"
+    },
+    "channel.number": {
+      "type": "integer",
+      "format": "CH {v}",
+      "emptyText": "CH --",
+      "range": {
+        "min": 1,
+        "max": 6
+      }
+    },
+    "channel.distance": {
+      "type": "number",
+      "unit": "m",
+      "precision": 1,
+      "format": "{v} 米",
+      "emptyText": "-- 米",
+      "range": {
+        "min": 0,
+        "max": 200
+      },
+      "freshnessMs": 1500
+    },
+    "channel.distanceValue": {
+      "type": "number",
+      "unit": "m",
+      "precision": 1,
+      "format": "{v}",
+      "emptyText": "--",
+      "range": {
+        "min": 0,
+        "max": 200
+      },
+      "freshnessMs": 1500
+    },
+    "channel.distanceSegments": {
+      "type": "integer",
+      "precision": 0,
+      "format": "{v}",
+      "emptyText": "0",
+      "range": {
+        "min": 0,
+        "max": 20
+      },
+      "freshnessMs": 1500
+    },
+    "channel.distanceUnit": {
+      "type": "enum",
+      "unit": "m",
+      "values": [
+        "米"
+      ],
+      "emptyText": "米"
+    },
+    "gauge.distanceCaption": {
+      "type": "string",
+      "unit": "m",
+      "emptyText": "最近目标 · 米"
+    },
+    "channel.fps": {
+      "type": "number",
+      "unit": "fps",
+      "precision": 0,
+      "format": "{v} 帧/秒",
+      "emptyText": "-- 帧/秒",
+      "range": {
+        "min": 0,
+        "max": 240
+      },
+      "freshnessMs": 1500
+    },
+    "channel.videoInfo": {
+      "type": "string",
+      "emptyText": "-- × -- ｜ -- 帧/秒 ｜ 推理 -- 帧/秒",
+      "freshnessMs": 1500
+    },
+    "channel.connected": {
+      "type": "boolean",
+      "map": {
+        "true": "已同步",
+        "false": "离线"
+      },
+      "emptyText": "离线",
+      "freshnessMs": 1500
+    },
+    "channel.targetLabel": {
+      "type": "string",
+      "emptyText": "--",
+      "freshnessMs": 1500
+    },
+    "channel.secondaryTargetLabel": {
+      "type": "string",
+      "emptyText": "--",
+      "freshnessMs": 1500
+    },
+    "stats.count": {
+      "type": "integer",
+      "precision": 0,
+      "format": "{v}",
+      "emptyText": "--",
+      "range": {
+        "min": 0,
+        "max": 999
+      },
+      "freshnessMs": 3000,
+      "index": {
+        "field": "bindingIndex",
+        "values": [
+          {
+            "index": 0,
+            "category": "机动车"
+          },
+          {
+            "index": 1,
+            "category": "行人"
+          },
+          {
+            "index": 2,
+            "category": "自行车"
+          },
+          {
+            "index": 3,
+            "category": "公交车"
+          },
+          {
+            "index": 4,
+            "category": "摩托车"
+          }
+        ]
+      }
+    },
+    "stats.fusedCount": {
+      "type": "integer",
+      "format": "融合目标 {v} 个",
+      "emptyText": "融合目标 -- 个",
+      "range": {
+        "min": 0,
+        "max": 999
+      },
+      "freshnessMs": 3000
+    },
+    "traffic.light": {
+      "type": "enum",
+      "values": [
+        "红灯",
+        "绿灯",
+        "黄灯",
+        "未知"
+      ],
+      "emptyText": "未知",
+      "freshnessMs": 1500
+    },
+    "traffic.distance": {
+      "type": "number",
+      "unit": "m",
+      "precision": 1,
+      "format": "{v} 米",
+      "emptyText": "-- 米",
+      "range": {
+        "min": 0,
+        "max": 200
+      },
+      "freshnessMs": 1500
+    },
+    "traffic.summary": {
+      "type": "string",
+      "emptyText": "信号灯：未知 ｜ 待判定",
+      "freshnessMs": 1500
+    },
+    "vehicle.nextAction": {
+      "type": "string",
+      "emptyText": "待判定",
+      "freshnessMs": 1500
+    },
+    "vehicle.action": {
+      "type": "enum",
+      "values": [
+        "待命",
+        "行驶中",
+        "已停车",
+        "变道中"
+      ],
+      "emptyText": "待命",
+      "freshnessMs": 1500
+    },
+    "vehicle.speedStatus": {
+      "type": "string",
+      "emptyText": "待命 · -- km/h",
+      "freshnessMs": 1500
+    },
+    "vehicle.laneSelection": {
+      "type": "enum",
+      "values": [
+        "左转车道",
+        "直行车道",
+        "右转车道",
+        "未选择"
+      ],
+      "emptyText": "未选择"
+    },
+    "vehicle.selectedHint": {
+      "type": "string",
+      "emptyText": "未选择"
+    },
+    "vehicle.actionDetail": {
+      "type": "string",
+      "emptyText": "待判定",
+      "freshnessMs": 1500
+    },
+    "ui.drive": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.stop": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.left": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.straight": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.right": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.violation": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.emergency": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.traffic": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.changeLeft": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "active",
+      "freshnessMs": 1500
+    },
+    "ui.changeRight": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "active",
+      "freshnessMs": 1500
+    },
+    "ui.predictionLeft": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.predictionStraight": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.predictionStop": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.predictionRight": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.predictionViolation": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    },
+    "ui.predictionEmergency": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "active",
+        "disabled",
+        "warning"
+      ],
+      "emptyText": "normal",
+      "freshnessMs": 1500
+    }
+  }
+}
